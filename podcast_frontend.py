@@ -13,6 +13,7 @@ def main():
 
     # Dropdown box to select the podcast
     st.sidebar.subheader("Available Podcasts Feeds")
+    podcast_options = list(available_podcast_info.keys())
     selected_podcast = st.sidebar.selectbox("Select Podcast", options=available_podcast_info.keys())
 
     # Send the selected podcast to the display function
@@ -31,14 +32,14 @@ def main():
 
         # Call the function to process the URLs and return the podcast information
         podcast_info = process_podcast_info(url)
-        
-        # Add the new podcast to the available podcast dictionary
-        available_podcast_info[podcast_info['podcast_details']['podcast_title']] = podcast_info
+
+        podcast_title = podcast_info['podcast_details']['podcast_title']
 
         # Update the sidebar dropdown options
-        podcast_options = list(available_podcast_info.keys())
-        selected_podcast = st.sidebar.selectbox("Select Podcast", options=podcast_options)
-
+        available_podcast_info[podcast_title] = podcast_info
+        podcast_options.append(podcast_title)  # Add to dropdown options
+        selected_podcast = podcast_title  # Set the new selection
+    
         # Call the function to display the podcast information
         display_podcast_info(podcast_info)
 
