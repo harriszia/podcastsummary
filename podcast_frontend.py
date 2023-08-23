@@ -29,8 +29,16 @@ def main():
 
     if process_button:
 
-        # Call the function to process the URLs and retrieve podcast guest information
+        # Call the function to process the URLs and return the podcast information
         podcast_info = process_podcast_info(url)
+        
+        # Add the new podcast to the available podcast dictionary
+        available_podcast_info[podcast_info['podcast_details']['podcast_title']] = podcast_info
+
+        # Update the sidebar dropdown options
+        podcast_options = list(available_podcast_info.keys())
+        selected_podcast = st.sidebar.selectbox("Select Podcast", options=podcast_options)
+
         # Call the function to display the podcast information
         display_podcast_info(podcast_info)
 
@@ -77,6 +85,11 @@ def create_dict_from_json_files(folder_path):
 def process_podcast_info(url):
     f = modal.Function.lookup("corise-podcast-project", "process_podcast")
     output = f.call(url, '/content/podcast/')
+
+    # Save the processed podcast info to a JSON file
+    with open('new_podcast.json', 'w') as json_file:
+        json.dump(output, json_file, indent=4)
+
     return output
 
 if __name__ == '__main__':
