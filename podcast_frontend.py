@@ -35,9 +35,13 @@ def main():
         podcast_info = process_podcast_info(url)
 
         # Display the podcast information
-        display_podcast_information(podcast_info)
+        podcast_display = st.empty()
+        display_podcast_information(podcast_info, podcast_display)
 
-def display_podcast_information(podcast_info):
+def display_podcast_information(podcast_info, display_space):
+    #Clear previous content from the display space
+    display_space.empty()
+
     # Display the podcast title
     st.subheader("Episode Title")
     st.write(podcast_info['podcast_details']['episode_title'])
