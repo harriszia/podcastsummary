@@ -11,17 +11,18 @@ def main():
     # Left section - Input fields
     st.sidebar.header("Podcast RSS Feeds")
 
-    # Dropdown box to select the podcast
+    # Dropdown box
     st.sidebar.subheader("Available Podcasts Feeds")
-    podcast_options = list(available_podcast_info.keys())
     selected_podcast = st.sidebar.selectbox("Select Podcast", options=available_podcast_info.keys())
 
-    # Send the selected podcast to the display function
     if selected_podcast:
-        display_podcast_info(available_podcast_info[selected_podcast])
-        #podcast_info = available_podcast_info[selected_podcast]  
 
-    # User Input box to enter the podcast URL
+        podcast_info = available_podcast_info[selected_podcast]
+
+        # Display the podcast information
+        display_podcast_information(podcast_info)
+
+    # User Input box
     st.sidebar.subheader("Add and Process New Podcast Feed")
     url = st.sidebar.text_input("Link to RSS Feed")
 
@@ -30,23 +31,13 @@ def main():
 
     if process_button:
 
-        # Call the function to process the URLs and return the podcast information
+        # Call the function to process the URLs and retrieve podcast information
         podcast_info = process_podcast_info(url)
 
-        podcast_title = podcast_info['podcast_details']['podcast_title']
+        # Display the podcast information
+        display_podcast_information(podcast_info)
 
-        # Update the sidebar dropdown options
-        available_podcast_info[podcast_title] = podcast_info
-        podcast_options.append(podcast_title)  # Add to dropdown options
-        selected_podcast = podcast_title  # Set the new selection
-    
-        # Call the function to display the podcast information
-        display_podcast_info(podcast_info)
-
-
-def display_podcast_info(podcast_info):
-    st.header("Newsletter Content")
-
+def display_podcast_information(podcast_info):
     # Display the podcast title
     st.subheader("Episode Title")
     st.write(podcast_info['podcast_details']['episode_title'])
@@ -62,11 +53,12 @@ def display_podcast_info(podcast_info):
     with col2:
         st.image(podcast_info['podcast_details']['episode_image'], caption="Podcast Cover", width=300, use_column_width=True)
 
-    # Display the key moments
+    # Display the five key moments
     st.subheader("Key Moments")
     key_moments = podcast_info['podcast_highlights']
     for moment in key_moments.split('\n'):
         st.markdown(f"<p style='margin-bottom: 5px;'>{moment}</p>", unsafe_allow_html=True)
+
 
 
 def create_dict_from_json_files(folder_path):
@@ -86,11 +78,6 @@ def create_dict_from_json_files(folder_path):
 def process_podcast_info(url):
     f = modal.Function.lookup("corise-podcast-project", "process_podcast")
     output = f.call(url, '/content/podcast/')
-
-    # Save the processed podcast info to a JSON file
-    with open('new_podcast.json', 'w') as json_file:
-        json.dump(output, json_file, indent=4)
-
     return output
 
 if __name__ == '__main__':
