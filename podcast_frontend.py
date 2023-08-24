@@ -4,6 +4,7 @@ import json
 import os
 
 def main():
+
     st.title("Newsletter Dashboard")
 
     available_podcast_info = create_dict_from_json_files('.')
@@ -35,13 +36,13 @@ def main():
         # Call the function to process the URLs and retrieve podcast information
         podcast_info = process_podcast_info(url)
 
-        #Clear the content_placeholder
-        content_placeholder.empty()
         
         # Display the podcast information
         display_podcast_information(podcast_info)
 
-        
+        #Clear the content_placeholder
+        content_placeholder.empty()
+
 
 
 def display_podcast_information(podcast_info):
