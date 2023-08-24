@@ -8,7 +8,6 @@ def main():
     st.title("Newsletter Dashboard")
 
     available_podcast_info = create_dict_from_json_files('.')
-    content_placeholder = st.empty()  # Create an empty placeholder to display the content
 
     # Left section - Input fields
     st.sidebar.header("Podcast RSS Feeds")
@@ -36,13 +35,11 @@ def main():
         # Call the function to process the URLs and retrieve podcast information
         podcast_info = process_podcast_info(url)
 
-        
+        #Clear the content_placeholder
+        st.empty()
+
         # Display the podcast information
         display_podcast_information(podcast_info)
-
-        #Clear the content_placeholder
-        content_placeholder.empty()
-
 
 
 def display_podcast_information(podcast_info):
