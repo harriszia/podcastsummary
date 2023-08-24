@@ -45,8 +45,7 @@ def main():
 def display_podcast_information(podcast_info):
 
     #Display the podcast title
-    st.subheader("Podcast Title")
-    st.write(podcast_info['podcast_details']['podcast_title'])
+    st.subheader(podcast_info['podcast_details']['podcast_title'])
 
     # Display the podcast episode title
     st.subheader("Episode Title")
